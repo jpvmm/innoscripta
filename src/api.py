@@ -17,6 +17,10 @@ class SearchResponse(BaseModel):
 
 app = FastAPI()
 
+@app.get("/ping/")
+def pong():
+    return 'pong'
+
 @app.get("/company/", response_model = SearchResponse)
 async def get_company_info(company_request: CompanyRequest):
     name = company_request.company_name
