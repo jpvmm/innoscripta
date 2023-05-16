@@ -16,6 +16,14 @@ class Innoscripta:
     """Class of innoscript solution"""
 
     def __init__(self, name: str, country: str, website: str = None):
+        """
+        Initialize the Innoscripta search engine.
+
+        Args:
+            name (str): name of the company
+            country (str): name of the country of the company
+            website (str): website of the company
+        """
         self.name = name
         self.country = country
         if not website:
@@ -30,8 +38,9 @@ class Innoscripta:
         parsed_gpt_ouput = self.gpt_call()
         google_query = self.google_query_formation(parsed_gpt_ouput)
         imgs = self.google_search(google_query)
+        parsed_gpt_ouput["images"] = imgs
 
-        return imgs
+        return parsed_gpt_ouput
 
     def gpt_call(self) -> dict:
         """
