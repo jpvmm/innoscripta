@@ -125,9 +125,9 @@ class Innoscripta:
         ikea.com
 
         the output must be in this format, please use it:
-        "Products/services": Furniture, Home decor, Kitchen and Dining;
-        "Keywords":furniture, storage, lighting;
-        "Company Classification":5712 (Furniture Stores) – SIC, 442110 (Furniture Stores) – NAICS
+        "products_services": Furniture, Home decor, Kitchen and Dining;
+        "keywords":furniture, storage, lighting;
+        "company_classification":5712 (Furniture Stores) – SIC, 442110 (Furniture Stores) – NAICS
         do it yourself now.
         input:
         {name_of_company}
