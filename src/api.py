@@ -5,12 +5,6 @@ from innoscripta import Innoscripta
 import logging
 import os
 
-class CompanyRequest(BaseModel):
-    company_name: str
-    company_country: str
-    company_website: Union[str, None] = None
-
-
 class SearchResponse(BaseModel):
     products_services: Union[List[str], None] = None
     keywords: Union[List[str], None] = None
@@ -38,7 +32,6 @@ async def get_company_info(
     inno = Innoscripta(name=name, country=country, website=website)
 
     response = inno.main()
-    print(response)
     logger.info("Response from Langchain: {response}")
 
     return response

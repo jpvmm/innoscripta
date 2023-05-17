@@ -36,7 +36,7 @@ class Innoscripta:
         Will do the innoscripta querying
         """
         parsed_gpt_ouput = self.gpt_call()
-        google_query = self.google_query_formation(parsed_gpt_ouput)
+        google_query = self.google_query_formation(parsed_gpt_ouput["products_services"])
         imgs = self.google_search(google_query)
         parsed_gpt_ouput["images"] = imgs
 
@@ -74,17 +74,12 @@ class Innoscripta:
         """
         Will manipulate strings to create Google search query
 
-        Args:
-            name(str): Name of company
-            countr(str): Country of company
-            products(list): Products that the company offers
-
         Return:
             google_query(str): Google query
         """
         products_services_str = " + ".join(products)
 
-        return " + ".join([self.name, self.country, products_services_str])
+        return " + ".join([self.name, products_services_str])
 
     def google_search(self, query: str) -> list:
         """
