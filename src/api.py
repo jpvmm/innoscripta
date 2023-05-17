@@ -11,7 +11,7 @@ class SearchResponse(BaseModel):
     company_classification: Union[List[str], None] = None
     images: Union[List, None] = None
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("uvicorn")
 logger.setLevel(os.getenv("LOGGER_LEVEL", logging.INFO))
 
 app = FastAPI()
@@ -29,6 +29,7 @@ async def get_company_info(
     name = company_name
     country = company_country
     website = company_website
+    logger.info(f"Inputs used: {name}, {country}, {website}")
     inno = Innoscripta(name=name, country=country, website=website)
 
     response = inno.main()
