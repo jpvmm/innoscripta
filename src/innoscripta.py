@@ -108,7 +108,8 @@ class Innoscripta:
         template = """
         I'll give you three inputs. These inputs will be the name of the company, 
         the country of the company, and the website company. The website of the company
-        is not mandatory.
+        is not mandatory, so it can be just an empty string.
+        If the website was not provided, gather all info you can with just name and country.
         You have to give me the products and services that the company offers as output.
         you dont need to give me nothing more than the ouput.
 
