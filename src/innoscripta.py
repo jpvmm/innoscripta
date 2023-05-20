@@ -5,11 +5,14 @@ from langchain import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.llms import OpenAI
 from serpapi import GoogleSearch
+import logging
 
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 SERPAPI_KEY = os.getenv("SERPAPI_KEY")
+
+logger = logging.getLogger(__name__)
 
 
 class Innoscripta:
@@ -27,15 +30,47 @@ class Innoscripta:
         self.name = name
         self.country = country
         if not website:
-            self.website = ""
+            logger.info("Website not provided, searching for it....")
+            self.website = self.find_website(company_name=name)
+            logger.info(f"Found website! {self.website}")
         else:
             self.website = website
+        self.llm = OpenAI(model_name="gpt-3.5-turbo", temperature=0)
+
+    def find_website(self, company_name) -> str:
+        """
+        Try to find the website of the company
+
+        Args:
+            company_name (str): The name of the company. 
+        Returns:
+            website (str): website of the company
+        """
+        search = GoogleSearch(
+            {
+                "q": f"{company_name} + website",
+                "engine": "google",
+                "location": "Austin, Texas",
+                "api_key": SERPAPI_KEY,
+            }
+        )
+        response = search.get_dict()
+
+        website = response["organic_results"][0]["link"]
+
+        if website:
+            return website
+        else:
+            return " " 
+
 
     def main(self):
         """
         Will do the innoscripta querying
         """
+        logger.info("Doing GPT search...")
         parsed_gpt_ouput = self.gpt_call()
+        logger.info("Doing Google search...")
         google_query = self.google_query_formation(parsed_gpt_ouput["products_services"])
         imgs = self.google_search(google_query)
         parsed_gpt_ouput["images"] = imgs
@@ -54,11 +89,10 @@ class Innoscripta:
         Results:
             output(dict) = Parsed output of OpenAIAPI
         """
-        llm = OpenAI(model_name="gpt-3.5-turbo", temperature=0)
 
         prompt = self.prompt_template()
 
-        chain = LLMChain(llm=llm, prompt=prompt)
+        chain = LLMChain(llm=self.llm, prompt=prompt)
         output = chain.run(
             {
                 "name_of_company": self.name,
@@ -100,7 +134,7 @@ class Innoscripta:
             }
         )
         response = search.get_dict()
-        imgs = [r["original"] for r in response["images_results"][:5]]
+        imgs = [r.get("original", None) for r in response["images_results"][:5]]
 
         return imgs
 
