@@ -145,9 +145,8 @@ class Innoscripta:
         is not mandatory, so it can be just an empty string.
         If the website was not provided, gather all info you can with just name and country.
         You have to give me the products and services that the company offers as output.
+        You give me a short with 200 tokens max summary of what Ikea offers as products and services.
         you dont need to give me nothing more than the ouput.
-
-
 
         input:
         IKEA Deutschland GmbH & Co. KG
@@ -157,7 +156,12 @@ class Innoscripta:
         the output must be in this format, please use it:
         "products_services": Furniture, Home decor, Kitchen and Dining;
         "keywords":furniture, storage, lighting;
-        "company_classification":5712 (Furniture Stores) – SIC, 442110 (Furniture Stores) – NAICS
+        "company_classification":5712 (Furniture Stores) – SIC, 442110 (Furniture Stores) – NAICS;
+        "additional_informations": Ikea offers affordable and stylish furniture, home decor, kitchen and 
+         dining items, storage solutions, appliances, mattresses, bedding, children's products, and 
+         assembly/delivery services. They prioritize functionality, contemporary designs, and 
+         personalized living spaces.
+
         do it yourself now.
         input:
         {name_of_company}
