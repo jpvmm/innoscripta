@@ -10,7 +10,11 @@ EXPOSE 8885
 COPY src/ /app
 COPY requirements.txt /app
 
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
+
+#COPY secrets
+COPY .env /app
 
 # Run the command to start uvicorn server for FastAPI
 CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8885"]
