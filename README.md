@@ -47,3 +47,10 @@ docker run -p 8885:8885 innoscripta
 Once this is done the API will be running and ready to go.
 
 To manual test it one can go to: 127.0.0.1:8885/docs and test GET company manually.
+
+### Test Script:
+Once the docker container is up and running, one can test the API via script too:
+
+```
+pyhon api_test_script.py
+```
