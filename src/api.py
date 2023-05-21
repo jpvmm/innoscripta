@@ -5,12 +5,14 @@ from innoscripta import Innoscripta
 import logging
 import os
 
+
 class SearchResponse(BaseModel):
     products_services: Union[List[str], None] = None
     keywords: Union[List[str], None] = None
     company_classification: Union[List[str], None] = None
     images: Union[List, None] = None
     additional_informations: Union[str, None] = None
+
 
 logger = logging.getLogger("uvicorn")
 logger.setLevel(os.getenv("LOGGER_LEVEL", logging.INFO))

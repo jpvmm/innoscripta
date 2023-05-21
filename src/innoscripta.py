@@ -42,7 +42,7 @@ class Innoscripta:
         Try to find the website of the company
 
         Args:
-            company_name (str): The name of the company. 
+            company_name (str): The name of the company.
         Returns:
             website (str): website of the company
         """
@@ -61,8 +61,7 @@ class Innoscripta:
         if website:
             return website
         else:
-            return " " 
-
+            return " "
 
     def main(self):
         """
@@ -71,11 +70,18 @@ class Innoscripta:
         logger.info("Doing GPT search...")
         parsed_gpt_ouput = self.gpt_call()
         logger.info("Doing Google search...")
-        google_query = self.google_query_formation(parsed_gpt_ouput["products_services"])
+        google_query = self.google_query_formation(
+            parsed_gpt_ouput["products_services"]
+        )
         imgs = self.google_search(google_query)
         parsed_gpt_ouput["images"] = imgs
-        parsed_gpt_ouput["additional_informations"] = [txt.replace("\n", " ") for txt in parsed_gpt_ouput["additional_informations"]]
-        parsed_gpt_ouput["additional_informations"] = ' '.join(parsed_gpt_ouput["additional_informations"])
+        parsed_gpt_ouput["additional_informations"] = [
+            txt.replace("\n", " ")
+            for txt in parsed_gpt_ouput["additional_informations"]
+        ]
+        parsed_gpt_ouput["additional_informations"] = " ".join(
+            parsed_gpt_ouput["additional_informations"]
+        )
         return parsed_gpt_ouput
 
     def gpt_call(self) -> dict:
