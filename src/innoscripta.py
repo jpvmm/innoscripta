@@ -74,7 +74,8 @@ class Innoscripta:
         google_query = self.google_query_formation(parsed_gpt_ouput["products_services"])
         imgs = self.google_search(google_query)
         parsed_gpt_ouput["images"] = imgs
-
+        parsed_gpt_ouput["additional_informations"] = [txt.replace("\n", " ") for txt in parsed_gpt_ouput["additional_informations"]]
+        parsed_gpt_ouput["additional_informations"] = ' '.join(parsed_gpt_ouput["additional_informations"])
         return parsed_gpt_ouput
 
     def gpt_call(self) -> dict:
