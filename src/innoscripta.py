@@ -75,13 +75,7 @@ class Innoscripta:
         )
         imgs = self.google_search(google_query)
         parsed_gpt_ouput["images"] = imgs
-        parsed_gpt_ouput["additional_informations"] = [
-            txt.replace("\n", " ")
-            for txt in parsed_gpt_ouput["additional_informations"]
-        ]
-        parsed_gpt_ouput["additional_informations"] = "".join(
-            parsed_gpt_ouput["additional_informations"]
-        )
+
         return parsed_gpt_ouput
 
     def gpt_call(self) -> dict:
@@ -152,7 +146,6 @@ class Innoscripta:
         is not mandatory, so it can be just an empty string.
         If the website was not provided, gather all info you can with just name and country.
         You have to give me the products and services that the company offers as output.
-        You give me a short with 200 tokens max summary of what Ikea offers as products and services.
         you dont need to give me nothing more than the ouput.
 
         input:
@@ -164,10 +157,18 @@ class Innoscripta:
         "products_services": Furniture, Home decor, Kitchen and Dining;
         "keywords":furniture, storage, lighting;
         "company_classification":5712 (Furniture Stores) – SIC, 442110 (Furniture Stores) – NAICS;
-        "additional_informations": Ikea offers affordable and stylish furniture, home decor, kitchen and 
-         dining items, storage solutions, appliances, mattresses, bedding, children's products, and 
-         assembly/delivery services. They prioritize functionality, contemporary designs, and 
-         personalized living spaces.
+        "additional_informations":
+            "Furniture" = "IKEA is well-known for its wide range of stylish and affordable furniture. They offer various furniture pieces for every room in the home, including living room, bedroom, kitchen, dining, and outdoor furniture. Their products feature modern designs, functionality, and often come in flat-pack form for easy transportation and assembly.",
+            "Home Decor and Accessories" =  "In addition to furniture, IKEA provides a variety of home decor and accessories to enhance the style and functionality of living spaces. This includes items such as rugs, curtains, lighting fixtures, mirrors, frames, plants, and decorative storage solutions.",
+            "Kitchen and Dining" = "IKEA offers a comprehensive range of kitchen and dining products. This includes kitchen cabinets, countertops, appliances, cookware, utensils, tableware, and dining furniture. They provide solutions for various kitchen styles, sizes, and budgets.",
+            "Storage and Organization" = "IKEA specializes in storage and organization solutions to help keep homes tidy and efficient. They offer a wide selection of shelves, storage units, wardrobes, drawers, and closet systems. These products are designed to maximize space and provide smart storage solutions.",
+            "Bedroom Furniture and Mattresses"= "IKEA provides bedroom furniture and mattresses that cater to different preferences and needs. They offer beds, bed frames, mattresses, dressers, wardrobes, and bedding accessories. Their products focus on comfort, functionality, and innovative design.",
+            "Bathroom Furnishings" = "For bathrooms, IKEA offers a range of furnishings and accessories, including vanities, cabinets, sinks, faucets, showers, storage solutions, and bathroom textiles. These products aim to optimize space utilization and create a stylish and functional bathroom environment.",
+            "Children's Furniture and Toys" = "IKEA features a variety of furniture and toys designed specifically for children. They offer children's beds, desks, storage systems, playroom furniture, toys, and decor items. Their products prioritize safety, durability, and imaginative play.",
+            "Textiles and Fabrics" = "IKEA provides an assortment of textiles and fabrics for home decor, including curtains, blinds, rugs, cushions, bedding, and fabrics by the yard. They offer a wide selection of colors, patterns, and materials to suit different styles and preferences.",
+            "Smart Home Solutions" = "In line with the growing trend of smart homes, IKEA offers smart home solutions such as lighting systems, wireless chargers, smart plugs, and integrated furniture with built-in technology. These products aim to enhance convenience, energy efficiency, and connectivity in the home.",
+            "Home Delivery and Assembly Services" = "IKEA offers home delivery services to bring purchased products directly to customers' homes. They also provide assembly services, where IKEA's professionals can assemble the furniture and ensure it is ready to use.",
+
 
         do it yourself now.
         input:
@@ -206,10 +207,35 @@ class Innoscripta:
 
         for section in sections:
             if section:
-                header, values_str = section.split(":")
-                header = header.strip('"')
-                values = [value.strip() for value in values_str.strip("[]").split(",")]
+                if "additional_informations" in section:
+                    header = "additional_informations"
+                    values = self.parse_additional_info(section)
+                else:
+                    header, values_str = section.split(":")
+                    header = header.strip('"')
+                    values = [value.strip() for value in values_str.strip("[]").split(",")]
 
                 result_dict[header] = values
 
         return result_dict
+
+    def parse_additional_info(self, data):
+        # Parse to dict
+        additional_informations = {}
+
+        # Split into lines and iterate
+        for line in data.split('\n'):
+            # Ignore lines without '='
+            if '=' not in line:
+                continue
+
+            # Split line into key-value pair
+            key, value = line.split('=', 1)
+
+            # Remove unwanted characters from key and value
+            key = key.replace('"', '').strip()
+            value = value.replace('"', '').strip()
+
+            # Add to dictionary
+            additional_informations[key] = value
+        return additional_informations

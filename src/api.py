@@ -11,7 +11,7 @@ class SearchResponse(BaseModel):
     keywords: Union[List[str], None] = None
     company_classification: Union[List[str], None] = None
     images: Union[List, None] = None
-    additional_informations: Union[str, None] = None
+    additional_informations: Union[Dict, str] = None
 
 
 logger = logging.getLogger("uvicorn")
