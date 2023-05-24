@@ -19,7 +19,7 @@ The output must be:
 5. Other informations about their business activity (additional points)
 
 ## The Solution:
-![alt text](presentation/inno_image.pngs)
+![alt text](presentation/inno_image.png)
 ## Running the Solution:
 This solution is mainly based in two different APIs: OpenAI API and SerpAPI. So the user must create two access keys for them.
 
