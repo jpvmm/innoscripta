@@ -1,6 +1,8 @@
 # Innoscripta Challenge:
 This is the solution for the Innoscripta Challenge.
 
+The solution is called Few Shot Search due to the technique used to "teach" GPT-3.5 on how to search data.
+
 ## The Challenge:
 The goal of this hackathon is to get detail information about what a company produces/offers/sells. The solution should be country & language independent where the output should be in English.
 
@@ -18,7 +20,7 @@ The output must be:
 4. Company branch (additional points)
 5. Other informations about their business activity (additional points)
 
-## The Solution:
+# The Solution - Few Shot Search:
 ![alt text](presentation/inno_image.png)
 ## Running the Solution:
 This solution is mainly based in two different APIs: OpenAI API and SerpAPI. So the user must create two access keys for them.
