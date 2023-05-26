@@ -53,5 +53,5 @@ To manual test it one can go to: 127.0.0.1:8885/docs and test GET company manual
 Once the docker container is up and running, one can test the API via script too:
 
 ```
-pyhon api_test_script.py
+python api_test_script.py
 ```
