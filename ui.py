@@ -14,7 +14,7 @@ def show_images(urls_to_images: list):
     default_text = 'No image available'
 
     # Make sure the list always has 5 items
-    while len(urls_to_images) < 5:
+    while len(urls_to_images) < 10:
         urls_to_images.append(default_text)
 
     # Display all items in a grid

@@ -6,6 +6,7 @@ from langchain.chains import LLMChain
 from langchain.llms import OpenAI
 from serpapi import GoogleSearch
 import logging
+import json
 
 load_dotenv()
 
@@ -13,6 +14,15 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 SERPAPI_KEY = os.getenv("SERPAPI_KEY")
 
 logger = logging.getLogger(__name__)
+
+with open("external_data/google-countries.json", "r") as f:
+    GL_COUNTRIES = json.load(f)
+
+with open("external_data/google-languages.json", "r") as f:
+    HL_COUNTRIES = json.load(f)
+
+with open("external_data/google-domains.json", "r") as f:
+    DOMAINS = json.load(f)
 
 
 class Innoscripta:
@@ -126,18 +136,59 @@ class Innoscripta:
         Results:
             imgs(list): List with URLs for images
         """
+        gl = self.get_gl()
+        hl = self.get_hl(gl)
+        domain = self.get_google_domain()
+
         search = GoogleSearch(
             {
-                "q": query,
+                "q": self.name,
                 "engine": "google_images",
-                "location": "Austin, Texas",
+                "location": self.country,
                 "api_key": SERPAPI_KEY,
+                "google_domain": domain,
+                "gl": gl,
+                "hl": hl
             }
         )
         response = search.get_dict()
-        imgs = [r.get("original", None) for r in response["images_results"][:5]]
+        imgs = [r.get("original", None) for r in response["images_results"][:10]]
 
         return imgs
+    
+    def get_gl(self):
+        """
+        Get Google Country to google image query
+        """
+        for d in GL_COUNTRIES:
+            print(d["country_name"])
+            if d["country_name"].lower() == self.country.lower():
+                print(d["country_code"])
+                return d["country_code"]
+        print("country_code not found!")
+        return "us"
+    
+    def get_hl(self, gl):
+        """
+        Get Google Languages to google image query
+        """
+        for d in HL_COUNTRIES:
+            if d["language_code"] == gl:
+                print(f"Language code: {d['language_code']}")
+                return d["language_code"]
+        print("HL not found!")
+        return "en"
+    
+    def get_google_domain(self):
+        """
+        Get Googke Domain to google image_query
+        """
+        for d in DOMAINS:
+            if d["country_name"] == self.country:
+                print(f"Found domain {d['domain']}")
+                return d["domain"]
+        print("Domain not found!")
+        return "google.com"
 
     def prompt_template(self):
         template = """
