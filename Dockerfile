@@ -8,6 +8,7 @@ EXPOSE 8885
 
 # Copy the current directory (src/) contents into the container at /app
 COPY src/ /app
+COPY external_data/ /app/external_data/
 COPY requirements.txt /app
 
 RUN pip install --upgrade pip

@@ -142,7 +142,7 @@ class Innoscripta:
 
         search = GoogleSearch(
             {
-                "q": self.name,
+                "q": query,
                 "engine": "google_images",
                 "location": self.country,
                 "api_key": SERPAPI_KEY,
